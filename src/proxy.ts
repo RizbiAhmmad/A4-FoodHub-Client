@@ -18,6 +18,16 @@ export async function proxy(request: NextRequest) {
   const isProvider = role === Roles.provider;
   const isCustomer = role === Roles.customer;
 
+  if (isAdmin && pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+  }
+  if (isProvider && pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+  if (isCustomer && pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/customer-dashboard", request.url));
+  }
+
   if (pathname.startsWith("/admin-dashboard") && !isAdmin) {
     return NextResponse.redirect(new URL("/", request.url));
   }
