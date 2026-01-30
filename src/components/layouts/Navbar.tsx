@@ -65,10 +65,10 @@ const Navbar = ({
       title: "Meals",
       url: "/meals",
     },
-    {
-      title: "About",
-      url: "/about",
-    },
+    // {
+    //   title: "About",
+    //   url: "/about",
+    // },
     {
       title: "Dashboard",
       url: "/dashboard",
