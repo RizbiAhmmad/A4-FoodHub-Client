@@ -9,7 +9,11 @@ interface GetMealsParams {
 }
 
 export const mealService = {
-  getMeals: async (params?: GetMealsParams, options?: { revalidate?: number }) => {
+
+  getMeals: async (
+    params?: GetMealsParams,
+    options?: { revalidate?: number }
+  ) => {
     try {
       const url = new URL(`${API_URL}/api/meals`)
 
@@ -29,4 +33,17 @@ export const mealService = {
       return { data: null, error: { message: "Failed to fetch meals" } }
     }
   },
+
+ getMealById: async (id: string) => {
+  try {
+    const res = await fetch(`${API_URL}/api/meals/${id}`, {
+      next: { revalidate: 10, tags: ["meals"] },
+    })
+    const data = await res.json()
+    return { data, error: null }
+  } catch (err) {
+    return { data: null, error: { message: "Something Went Wrong" } }
+  }
+}
+
 }

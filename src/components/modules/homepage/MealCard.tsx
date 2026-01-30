@@ -3,6 +3,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Meal } from "@/types/meal.type"
 import { Badge } from "@/components/ui/badge"
 import { Star } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 
 export default function MealCard({ meal }: { meal: Meal }) {
@@ -37,20 +39,23 @@ export default function MealCard({ meal }: { meal: Meal }) {
         )}
       </CardContent>
 
-      <CardFooter className="flex justify-between items-center">
-        <span className="font-bold text-lg">৳ {meal.price}</span>
+     <CardFooter className="flex flex-col gap-3 items-start">
+  <div className="flex w-full justify-between items-center">
+    <span className="font-bold text-lg">৳ {meal.price}</span>
 
-        {avgRating && (
-          <div className="flex items-center gap-1 text-yellow-500">
-            <Star size={16} />
-            {avgRating}
-          </div>
-        )}
+    {avgRating && (
+      <div className="flex items-center gap-1 text-yellow-500">
+        <Star size={16} />
+        {avgRating}
+      </div>
+    )}
+  </div>
 
-        {meal.isFeatured && (
-          <Badge className="bg-yellow-500">Featured</Badge>
-        )}
-      </CardFooter>
+  <Link href={`/meals/${meal.id}`} className="w-full">
+    <Button className="w-full">View Details</Button>
+  </Link>
+</CardFooter>
+
     </Card>
   )
 }
