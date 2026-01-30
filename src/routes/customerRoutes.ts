@@ -6,8 +6,12 @@ export const customerRoutes: Route[]= [
       
       items: [
         {
-          title: "Analytics",
-          url: "/analytics",
+          title: "Home",
+          url: "/",
+        },
+        {
+          title: "My Orders",
+          url: "/myOrders",
         },
        
       ],

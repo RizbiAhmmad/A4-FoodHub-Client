@@ -22,7 +22,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin-dashboard", request.url));
   }
   if (isProvider && pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/provider-dashboard", request.url));
   }
   if (isCustomer && pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/customer-dashboard", request.url));

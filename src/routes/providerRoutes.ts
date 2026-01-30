@@ -6,6 +6,10 @@ export const providerRoutes: Route[]= [
       
       items: [
         {
+          title: "Home",
+          url: "/",
+        },
+        {
           title: "Provider Analytics",
           url: "/analytics",
         },
