@@ -1,4 +1,5 @@
 import MealCard from "@/components/modules/homepage/MealCard"
+import HeroCarousel from "@/components/modules/homepage/slider"
 import { mealService } from "@/services/meal.service"
 import { Meal } from "@/types/meal.type"
 
@@ -13,7 +14,8 @@ export default async function MealsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
-      <h1 className="text-4xl font-bold mb-8">🍽️ Meals</h1>
+        <HeroCarousel></HeroCarousel>
+      <h1 className="text-4xl font-bold mt-8 text-center mb-8">🍽️ Meals</h1>
 
       {featuredMeals?.data?.length > 0 && (
         <>
