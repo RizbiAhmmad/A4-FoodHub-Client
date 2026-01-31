@@ -13,6 +13,10 @@ export const providerRoutes: Route[]= [
           title: "Create Restaurant Profile",
           url: "/provider-dashboard/create-providerprofile",
         },
+        {
+          title: "Create Category",
+          url: "/provider-dashboard/create-category",
+        },
        
       ],
     },
