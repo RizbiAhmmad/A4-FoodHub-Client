@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { mealService } from "@/services/meal.service";
 import { Button } from "@/components/ui/button";
+// import { OrderForm } from "@/components/modules/customer/order/OrderForm";
+import Link from "next/link";
 
 export default async function MealDetailsPage({
   params,
@@ -56,9 +58,12 @@ export default async function MealDetailsPage({
           <div className="mt-6 flex flex-col gap-4">
             <p className="text-2xl md:text-3xl font-bold text-primary">৳ {meal.price}</p>
 
-            <Button className="w-full md:w-1/2 bg-orange-500 hover:bg-orange-600 text-white">
-              Order Now
-            </Button>
+            <Link href={`/order/${meal.id}`} className="w-full md:w-1/2">
+  <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+    Order Now
+  </Button>
+</Link>
+
 
             <div className="mt-4 flex items-center gap-4">
               <Image
