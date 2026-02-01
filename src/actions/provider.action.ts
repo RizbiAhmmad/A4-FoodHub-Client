@@ -1,7 +1,16 @@
-"use server"
+"use server";
 
-import { providerService, ProviderProfileData } from "@/services/provider.service"
+import { providerService, ProviderProfileData } from "@/services/provider.service";
+import { updateTag } from "next/cache";
 
-export async function createProviderProfileAction(data: ProviderProfileData) {
-  return await providerService.createProfile(data)
-}
+export const getProviderProfile = async () => {
+  return await providerService.getProfile();
+};
+
+export const createProviderProfileAction = async (
+  data: ProviderProfileData
+) => {
+  const res = await providerService.createProfile(data);
+  updateTag("provider-profile"); // revalidate
+  return res;
+};
