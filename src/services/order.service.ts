@@ -31,6 +31,29 @@ export interface OrderData {
   }[];
 }
 
+export interface ProviderOrderItem {
+  quantity: number;
+  price: number;
+  meal?: {
+    name: string;
+    image?: string | null;
+  };
+}
+
+export interface ProviderOrder {
+  id: string;
+  status: string;
+  totalAmount: number;
+  createdAt: string;
+
+  customer?: {
+    name: string;
+    phone: string;
+  };
+
+  items: ProviderOrderItem[];
+}
+
 
 export const orderService = {
   createOrder: async (data: OrderData) => {
@@ -71,4 +94,25 @@ export const orderService = {
       return { data: null, error: { message: "Failed to fetch orders" } };
     }
   },
+
+  // services/order.service.ts
+
+getProviderOrders: async () => {
+  try {
+    const cookieStore = await cookies();
+
+    const res = await fetch(`${API_URL}/api/orders/provider`, {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+      next: { tags: ["provider-orders"] },
+    });
+
+    const result = await res.json();
+    return { data: result, error: null };
+  } catch {
+    return { data: null, error: { message: "Failed to fetch provider orders" } };
+  }
+},
+
 };
