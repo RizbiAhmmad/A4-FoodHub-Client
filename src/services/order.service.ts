@@ -45,15 +45,15 @@ export interface ProviderOrder {
   status: string;
   totalAmount: number;
   createdAt: string;
+  address: string;
+  phone: string;
 
   customer?: {
     name: string;
-    phone: string;
   };
 
   items: ProviderOrderItem[];
 }
-
 
 export const orderService = {
   createOrder: async (data: OrderData) => {
@@ -97,22 +97,44 @@ export const orderService = {
 
   // services/order.service.ts
 
-getProviderOrders: async () => {
-  try {
-    const cookieStore = await cookies();
+  getProviderOrders: async () => {
+    try {
+      const cookieStore = await cookies();
 
-    const res = await fetch(`${API_URL}/api/orders/provider`, {
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
-      next: { tags: ["provider-orders"] },
-    });
+      const res = await fetch(`${API_URL}/api/orders/provider`, {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        next: { tags: ["provider-orders"] },
+      });
 
-    const result = await res.json();
-    return { data: result, error: null };
-  } catch {
-    return { data: null, error: { message: "Failed to fetch provider orders" } };
-  }
-},
+      const result = await res.json();
+      return { data: result, error: null };
+    } catch {
+      return {
+        data: null,
+        error: { message: "Failed to fetch provider orders" },
+      };
+    }
+  },
 
+  updateOrderStatus: async (orderId: string, status: string) => {
+    try {
+      const cookieStore = await cookies(); // get the provider cookies
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(), // <-- add this
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) return { data: null, error: { message: result.message } };
+      return { data: result, error: null };
+    } catch {
+      return { data: null, error: { message: "Failed to update status" } };
+    }
+  },
 };

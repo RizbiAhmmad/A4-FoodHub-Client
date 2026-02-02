@@ -18,3 +18,8 @@ export const getProviderOrdersAction = async () => {
   return await orderService.getProviderOrders();
 };
 
+export const updateOrderStatusAction = async (orderId: string, status: string) => {
+  const res = await orderService.updateOrderStatus(orderId, status);
+  updateTag("provider-orders"); // optional: revalidate provider orders cache
+  return res;
+};
