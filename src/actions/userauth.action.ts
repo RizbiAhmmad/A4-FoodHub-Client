@@ -7,6 +7,10 @@ export const getAllUsersAction = async () => {
   return adminUserService.getAllUsers();
 };
 
+export const getMeAction = async () => {
+  return adminUserService.getMe();
+};
+
 export const changeUserRoleAction = async (id: string, role: string) => {
   const res = await adminUserService.updateUserRole(id, role);
   revalidateTag("users", "max");

@@ -40,6 +40,29 @@ export const adminUserService = {
     }
   },
 
+  getMe: async () => {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/api/users/me`, {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        return { data: null, error: { message: err.message } };
+      }
+
+      const data = await res.json();
+      return { data, error: null };
+    } catch {
+      return { data: null, error: { message: "Failed to fetch profile" } };
+    }
+  },
+
   updateUserRole: async (id: string, role: string) => {
     const cookieStore = await cookies();
 
