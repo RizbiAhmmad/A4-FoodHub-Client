@@ -19,6 +19,19 @@ interface GetMealsParams {
   limit?: string;
 }
 
+export interface ProviderMeal {
+  id: string;
+  name: string;
+  description?: string | null;
+  price: number;
+  image?: string | null;
+  isFeatured: boolean;
+  category?: {
+    id: string;
+    name: string;
+  } | null;
+}
+
 export const mealService = {
   getMeals: async (
     params?: GetMealsParams,
@@ -50,6 +63,32 @@ export const mealService = {
       return { data, error: null };
     } catch {
       return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
+
+  getMyMeals: async (): Promise<{
+    data: ProviderMeal[] | null;
+    error: { message: string } | null;
+  }> => {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/api/meals/my-meals`, {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        next: { tags: ["my-meals"] },
+      });
+
+      const data: ProviderMeal[] = await res.json(); // ✅ TYPE HERE
+
+      if (!res.ok) {
+        return { data: null, error: { message: "Failed" } };
+      }
+
+      return { data, error: null };
+    } catch {
+      return { data: null, error: { message: "Failed to fetch your meals" } };
     }
   },
 
