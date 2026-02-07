@@ -80,7 +80,7 @@ export const mealService = {
         next: { tags: ["my-meals"] },
       });
 
-      const data: ProviderMeal[] = await res.json(); // ✅ TYPE HERE
+      const data: ProviderMeal[] = await res.json();
 
       if (!res.ok) {
         return { data: null, error: { message: "Failed" } };
@@ -91,6 +91,51 @@ export const mealService = {
       return { data: null, error: { message: "Failed to fetch your meals" } };
     }
   },
+
+  updateMeal: async (id: string, data: MealData) => {
+  try {
+    const cookieStore = await cookies();
+
+    const res = await fetch(`${API_URL}/api/meals/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieStore.toString(),
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      return { data: null, error: { message: result.message } };
+    }
+
+    return { data: result, error: null };
+  } catch {
+    return { data: null, error: { message: "Update failed" } };
+  }
+},
+
+deleteMeal: async (id: string) => {
+  try {
+    const cookieStore = await cookies();
+
+    const res = await fetch(`${API_URL}/api/meals/${id}`, {
+      method: "DELETE",
+      headers: { Cookie: cookieStore.toString() },
+    });
+
+    if (!res.ok) {
+      return { data: null, error: { message: "Delete failed" } };
+    }
+
+    return { data: true, error: null };
+  } catch {
+    return { data: null, error: { message: "Delete failed" } };
+  }
+},
+
 
   createMeal: async (data: MealData) => {
     try {

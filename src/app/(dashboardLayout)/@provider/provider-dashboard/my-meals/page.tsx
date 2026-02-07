@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import EditMealModal from "@/components/modules/provider/editMeal/EditMealModal";
 
 export default async function MyMealsPage() {
   const { data: meals } = await getMyMealsAction();
@@ -45,19 +46,10 @@ export default async function MyMealsPage() {
                 </span>
               </div>
 
-              <div className="flex gap-2 pt-3">
-                <Link href={`/dashboard/edit-meal/${meal.id}`} className="w-full">
-                  <Button variant="secondary" className="w-full">
-                    Edit
-                  </Button>
-                </Link>
+             <div className="pt-3 flex justify-center">
+  <EditMealModal meal={meal} />
+</div>
 
-                <Link href={`/dashboard/delete-meal/${meal.id}`} className="w-full">
-                  <Button variant="destructive" className="w-full">
-                    Delete
-                  </Button>
-                </Link>
-              </div>
             </div>
           </Card>
         ))}
