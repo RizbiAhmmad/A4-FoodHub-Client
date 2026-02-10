@@ -15,14 +15,18 @@ export const adminRoutes: Route[]= [
           url: "/admin-dashboard/users",
         },
         {
+          title: "All orders",
+          url: "/admin-dashboard/all-orders",
+        },
+        {
           title: "Profile",
           url: "/admin-dashboard/profile",
         },
         
-        {
-          title: "Categories",
-          url: "/categories",
-        },
+        // {
+        //   title: "Categories",
+        //   url: "/categories",
+        // },
       ],
     },
   ]

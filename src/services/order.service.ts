@@ -55,6 +55,34 @@ export interface ProviderOrder {
   items: ProviderOrderItem[];
 }
 
+export interface AdminOrder {
+  id: string;
+  status: string;
+  totalAmount: number;
+  address: string;
+  phone: string;
+  createdAt: string;
+
+  customer?: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+
+  provider?: {
+    restaurantName: string;
+  };
+
+  items: {
+    quantity: number;
+    price: number;
+    meal?: {
+      name: string;
+      image?: string | null;
+    };
+  }[];
+}
+
 export const orderService = {
   createOrder: async (data: OrderData) => {
     try {
@@ -79,6 +107,22 @@ export const orderService = {
     }
   },
 
+  getAllOrders: async () => {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/api/orders/admin`, {
+        headers: { Cookie: cookieStore.toString() },
+        next: { tags: ["admin-orders"] },
+      });
+
+      const result: AdminOrder[] = await res.json();
+      return { data: result, error: null };
+    } catch {
+      return { data: null, error: { message: "Failed to fetch all orders" } };
+    }
+  },
+
   getOrders: async () => {
     try {
       const cookieStore = await cookies();
@@ -86,7 +130,7 @@ export const orderService = {
         headers: {
           Cookie: cookieStore.toString(),
         },
-        next: { tags: ["orders"] }, // same pattern as blogService
+        next: { tags: ["orders"] },
       });
       const result = await res.json();
       return { data: result, error: null };
@@ -94,8 +138,6 @@ export const orderService = {
       return { data: null, error: { message: "Failed to fetch orders" } };
     }
   },
-
-  // services/order.service.ts
 
   getProviderOrders: async () => {
     try {
