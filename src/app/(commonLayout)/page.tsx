@@ -1,3 +1,4 @@
+import HomepageExtraSections from "@/components/modules/homepage/HomePageExtraSections"
 import MealCard from "@/components/modules/homepage/MealCard"
 import HeroCarousel from "@/components/modules/homepage/slider"
 import { mealService } from "@/services/meal.service"
@@ -33,6 +34,10 @@ export default async function MealsPage() {
         {meals?.data?.map((meal: Meal) => (
           <MealCard key={meal.id} meal={meal} />
         ))}
+      </div>
+
+      <div>
+        <HomepageExtraSections></HomepageExtraSections>
       </div>
     </div>
   )

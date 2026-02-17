@@ -64,9 +64,9 @@ interface Navbar1Props {
 const Navbar = ({
   logo = {
     url: "/",
-    src: "https://static.vecteezy.com/system/resources/thumbnails/054/088/141/small/a-green-house-with-fork-and-knife-inside-vector.jpg",
+    src: "https://brand.foodhub.com/images/png/foodhub_vertical_new.png",
     alt: "logo",
-    title: "FoodHub",
+    title: "",
   },
   menu = [
     { title: "Home", url: "/" },
@@ -102,7 +102,7 @@ const Navbar = ({
 
   return (
     <section className={cn("py-4", className)}>
-      <div className="container mx-auto px-12">
+      <div className="container max-w-7xl mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
