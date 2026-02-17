@@ -21,6 +21,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ModeToggle } from "./ModeToggle";
 
 interface MenuItem {
   title: string;
@@ -120,6 +121,7 @@ const Navbar = ({
           </div>
 
           <div className="flex gap-2">
+            <ModeToggle></ModeToggle>
             {!loading && (user ? (
               <Button onClick={handleSignOut} variant="outline" size="sm">Sign Out</Button>
             ) : (
