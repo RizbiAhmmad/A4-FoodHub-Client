@@ -12,3 +12,13 @@ export const createCategoryAction = async (data: CategoryData) => {
   updateTag("categories"); 
   return res;
 };
+
+export const deleteCategoryAction = async (id: string) => {
+  const res = await categoryService.deleteCategory(id);
+
+  if (!res.error) {
+    updateTag("categories"); // revalidate
+  }
+
+  return res;
+};

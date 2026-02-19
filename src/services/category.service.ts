@@ -19,7 +19,7 @@ export const categoryService = {
   getCategories: async () => {
     try {
       const res = await fetch(`${API_URL}/api/categories`, {
-        next: { tags: ["categories"] }, // caching like blog
+        next: { tags: ["categories"] },
       });
 
       const data = await res.json();
@@ -52,6 +52,29 @@ export const categoryService = {
       return { data: result, error: null };
     } catch {
       return { data: null, error: { message: "Something went wrong" } };
+    }
+  },
+  //* DELETE
+  deleteCategory: async (id: string) => {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/api/categories/${id}`, {
+        method: "DELETE",
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        return { data: null, error: { message: result.message } };
+      }
+
+      return { data: result, error: null };
+    } catch {
+      return { data: null, error: { message: "Failed to delete category" } };
     }
   },
 };

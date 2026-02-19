@@ -162,6 +162,7 @@ const Navbar = ({
                     {menu.map(item => renderMobileMenuItem(item))}
                   </Accordion>
                   <div className="flex flex-col gap-3">
+                    <ModeToggle></ModeToggle>
                     {!loading && (user ? (
                       <Button onClick={handleSignOut} variant="outline">Sign Out</Button>
                     ) : (
