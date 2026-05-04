@@ -34,7 +34,7 @@ export const adminUserService = {
       }
 
       const data = await res.json();
-      return { data, error: null };
+      return { data: data.data, meta: data.meta, error: null };
     } catch {
       return { data: null, error: { message: "Failed to fetch users" } };
     }

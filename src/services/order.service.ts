@@ -116,8 +116,8 @@ export const orderService = {
         next: { tags: ["admin-orders"] },
       });
 
-      const result: AdminOrder[] = await res.json();
-      return { data: result, error: null };
+      const result = await res.json();
+      return { data: result.data, meta: result.meta, error: null };
     } catch {
       return { data: null, error: { message: "Failed to fetch all orders" } };
     }
@@ -133,7 +133,7 @@ export const orderService = {
         next: { tags: ["orders"] },
       });
       const result = await res.json();
-      return { data: result, error: null };
+      return { data: result.data, meta: result.meta, error: null };
     } catch {
       return { data: null, error: { message: "Failed to fetch orders" } };
     }
@@ -151,7 +151,7 @@ export const orderService = {
       });
 
       const result = await res.json();
-      return { data: result, error: null };
+      return { data: result.data, meta: result.meta, error: null };
     } catch {
       return {
         data: null,

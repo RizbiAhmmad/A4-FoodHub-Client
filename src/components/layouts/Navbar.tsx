@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Accordion } from "@/components/ui/accordion";
@@ -29,15 +30,6 @@ interface MenuItem {
   description?: string;
   icon?: React.ReactNode;
   items?: MenuItem[];
-}
-
-// Navbar er jonno User type
-interface UserType {
-  id: string;
-  name: string;
-  email: string;
-  image?: string | null;
-  role?: string | null;
 }
 
 interface Navbar1Props {
@@ -80,8 +72,13 @@ const Navbar = ({
   },
   className,
 }: Navbar1Props) => {
+  const [mounted, setMounted] = React.useState(false);
   const router = useRouter();
   const { data, isPending } = authClient.useSession();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const user = data?.user ?? null;
   const loading = isPending;
@@ -122,7 +119,7 @@ const Navbar = ({
 
           <div className="flex w-1/4 justify-end gap-2 items-center">
             <ModeToggle></ModeToggle>
-            {!loading &&
+            {mounted && !loading &&
               (user ? (
                 <Button onClick={handleSignOut} variant="outline">
                   Sign Out
@@ -179,7 +176,7 @@ const Navbar = ({
                   </Accordion>
                   <div className="flex flex-col gap-3">
                     <ModeToggle></ModeToggle>
-                    {!loading &&
+                    {mounted && !loading &&
                       (user ? (
                         <Button onClick={handleSignOut} variant="outline">
                           Sign Out

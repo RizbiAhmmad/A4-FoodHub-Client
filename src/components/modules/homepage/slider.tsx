@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const slides = [
   {
@@ -19,8 +20,7 @@ const slides = [
     title: "Chef’s Special Dishes",
     subtitle: "Experience restaurant-quality meals at home.",
     price: "Today’s Special Menu",
-    image:
-      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200",
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200",
   },
   {
     id: 3,
@@ -35,8 +35,8 @@ const slides = [
     title: "Fast Delivery Meals",
     subtitle: "Hot & fresh meals in minutes.",
     price: "Order Now",
-    image: "https://plus.unsplash.com/premium_photo-1666353535582-9268ce1a981c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZCUyMGJhbm5lcnxlbnwwfHwwfHx8MA%3D%3D?w=1200",
-
+    image:
+      "https://plus.unsplash.com/premium_photo-1666353535582-9268ce1a981c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZCUyMGJhbm5lcnxlbnwwfHwwfHx8MA%3D%3D?w=1200",
   },
 ];
 
@@ -75,12 +75,12 @@ export default function HeroCarousel() {
                   <p className="text-lg md:text-xl text-gray-200">
                     {slide.subtitle}
                   </p>
-                  <p className="text-2xl font-semibold">
-                    {slide.price}
-                  </p>
-                  <Button className="mt-4 bg-white text-black hover:bg-gray-200">
-                    Explore Meals
-                  </Button>
+                  <p className="text-2xl font-semibold">{slide.price}</p>
+                  <Link href="/meals">
+                    <Button className="mt-4 bg-white text-black hover:bg-gray-200">
+                      Explore Meals
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -99,9 +99,7 @@ export default function HeroCarousel() {
       </button>
 
       <button
-        onClick={() =>
-          setCurrent((current + 1) % slides.length)
-        }
+        onClick={() => setCurrent((current + 1) % slides.length)}
         className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/70 p-2 rounded-full"
       >
         <ChevronRight />

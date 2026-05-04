@@ -6,6 +6,7 @@ import HeroCarousel from "@/components/modules/homepage/slider";
 import { mealService } from "@/services/meal.service";
 import { Meal } from "@/types/meal.type";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function MealsPage() {
   const featuredMealsPromise = mealService.getMeals({ isFeatured: true });
@@ -41,7 +42,11 @@ export default async function MealsPage() {
       "
             >
               {categories.data.map((cat: any) => (
-                <div key={cat.id} className="group">
+                <Link
+                  key={cat.id}
+                  href={`/meals?cuisine=${cat.name}`}
+                  className="group"
+                >
                   <div className="relative w-40 h-40 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition">
                     <Image
                       src={cat.image || "/placeholder.jpg"}
@@ -56,7 +61,7 @@ export default async function MealsPage() {
                       </h3>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
