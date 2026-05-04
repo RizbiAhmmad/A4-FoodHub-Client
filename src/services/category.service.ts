@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { env } from "@/env";
 import { cookies } from "next/headers";
 
@@ -16,16 +17,36 @@ export interface Category {
 
 export const categoryService = {
   //* GET ALL
-  getCategories: async () => {
+  getCategories: async (query?: Record<string, any>) => {
     try {
-      const res = await fetch(`${API_URL}/api/categories`, {
+      const url = new URL(`${API_URL}/api/categories`);
+      if (query) {
+        Object.entries(query).forEach(([key, value]) => {
+          if (value) url.searchParams.append(key, value.toString());
+        });
+      }
+
+      const res = await fetch(url.toString(), {
         next: { tags: ["categories"] },
       });
 
-      const data = await res.json();
-      return { data, error: null };
+      const responseBody = await res.json();
+
+      if (responseBody.meta && Array.isArray(responseBody.data)) {
+        return {
+          data: responseBody.data,
+          meta: responseBody.meta,
+          error: null,
+        };
+      }
+
+      return { data: responseBody, meta: null, error: null };
     } catch {
-      return { data: null, error: { message: "Failed to fetch categories" } };
+      return {
+        data: null,
+        meta: null,
+        error: { message: "Failed to fetch categories" },
+      };
     }
   },
 

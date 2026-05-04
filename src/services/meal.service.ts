@@ -14,9 +14,15 @@ export interface MealData {
 }
 
 interface GetMealsParams {
-  isFeatured?: boolean;
-  search?: string;
+  searchTerm?: string;
   limit?: string;
+  page?: string;
+  sortBy?: string;
+  sortOrder?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  cuisine?: string;
+  [key: string]: string | boolean | undefined;
 }
 
 export interface ProviderMeal {
@@ -47,10 +53,17 @@ export const mealService = {
       const res = await fetch(url.toString(), {
         next: { revalidate: options?.revalidate || 10, tags: ["meals"] },
       });
-      const data = await res.json();
-      return { data, error: null };
+      const responseBody = await res.json();
+      
+      // Handle the new QueryBuilder response format
+      if (responseBody.meta && Array.isArray(responseBody.data)) {
+        return { data: responseBody.data, meta: responseBody.meta, error: null };
+      }
+      
+      // Fallback for old format or unexpected response
+      return { data: responseBody, meta: null, error: null };
     } catch {
-      return { data: null, error: { message: "Failed to fetch meals" } };
+      return { data: null, meta: null, error: { message: "Failed to fetch meals" } };
     }
   },
 

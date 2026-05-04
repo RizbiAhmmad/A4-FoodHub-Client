@@ -1,62 +1,83 @@
 import MealCard from "@/components/modules/homepage/MealCard";
 import { mealService } from "@/services/meal.service";
+import { categoryService } from "@/services/category.service";
 import { Meal } from "@/types/meal.type";
-import Link from "next/link";
+import MealFilters from "./MealFilters";
+import MealSearch from "./MealSearch";
+import Pagination from "./Pagination";
 
 export default async function MealsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sort?: string }>;
+  searchParams: Promise<{
+    sort?: string;
+    searchTerm?: string;
+    cuisine?: string;
+    page?: string;
+  }>;
 }) {
-  // ✅ MUST await searchParams in Next 15
-  const { sort } = await searchParams;
+  const params = await searchParams;
+  const { sort, searchTerm, cuisine, page = "1" } = params;
 
-  const mealsRes = await mealService.getMeals({ limit: "20" });
-  let meals: Meal[] = mealsRes?.data || [];
+  // Map UI sort to backend params
+  const sortBy = sort ? "price" : "createdAt";
+  const sortOrder = sort === "low" ? "asc" : "desc";
 
-  // 🔥 Sorting
-  if (sort === "low") {
-    meals = [...meals].sort(
-      (a, b) => Number(a.price) - Number(b.price)
-    );
-  }
+  // Parallel fetch for meals and categories
+  const [mealsRes, categoriesRes] = await Promise.all([
+    mealService.getMeals({
+      limit: "9",
+      page,
+      searchTerm,
+      cuisine,
+      sortBy,
+      sortOrder,
+    }),
+    categoryService.getCategories(),
+  ]);
 
-  if (sort === "high") {
-    meals = [...meals].sort(
-      (a, b) => Number(b.price) - Number(a.price)
-    );
-  }
+  const meals: Meal[] = mealsRes?.data || [];
+  const categories = categoriesRes?.data || [];
+  const meta = mealsRes?.meta || { page: 1, totalPages: 1 };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">🍴 All Meals</h1>
-
-        <div className="flex gap-3 text-sm">
-          <Link
-            href="/meals?sort=low"
-            className={`px-4 py-2 border rounded-lg ${
-              sort === "low" ? "bg-black text-white" : "hover:bg-muted"
-            }`}
-          >
-            Price: Low → High
-          </Link>
-
-          <Link
-            href="/meals?sort=high"
-            className={`px-4 py-2 border rounded-lg ${
-              sort === "high" ? "bg-black text-white" : "hover:bg-muted"
-            }`}
-          >
-            Price: High → Low
-          </Link>
-        </div>
+      <div className="mb-12">
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-900 dark:text-white">
+          Explore Our Delicious <span className="text-orange-500">Meals</span>
+        </h1>
+        <MealSearch />
       </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {meals.map((meal: Meal) => (
-          <MealCard key={meal.id} meal={meal} />
-        ))}
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Sidebar Filters */}
+        <aside className="w-full lg:w-64 flex-shrink-0">
+          <MealFilters categories={categories} />
+        </aside>
+
+        {/* Main Content: Meal Grid */}
+        <main className="flex-grow">
+          {meals.length > 0 ? (
+            <>
+              <div className="grid sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {meals.map((meal: Meal) => (
+                  <MealCard key={meal.id} meal={meal} />
+                ))}
+              </div>
+
+              <Pagination
+                currentPage={Number(page)}
+                totalPages={meta.totalPages}
+                searchParams={params}
+              />
+            </>
+          ) : (
+            <div className="text-center py-20 bg-gray-50 dark:bg-gray-900 rounded-[2rem] border-2 border-dashed border-gray-200 dark:border-gray-800">
+              <p className="text-xl text-gray-500 mb-2 font-bold">No meals found!</p>
+              <p className="text-gray-400">Try adjusting your filters or search term.</p>
+            </div>
+          )}
+        </main>
       </div>
     </div>
   );

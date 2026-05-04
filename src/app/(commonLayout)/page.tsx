@@ -9,7 +9,7 @@ import Image from "next/image";
 
 export default async function MealsPage() {
   const featuredMealsPromise = mealService.getMeals({ isFeatured: true });
-  const mealsPromise = mealService.getMeals({ limit: "6" });
+  const mealsPromise = mealService.getMeals({ limit: "8" });
   const categoriesPromise = getCategories();
 
   const [featuredMeals, meals, categories] = await Promise.all([
@@ -68,7 +68,7 @@ export default async function MealsPage() {
       {featuredMeals?.data?.length > 0 && (
         <>
           <h2 className="text-2xl font-bold mb-4">Featured Meals</h2>
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
             {featuredMeals.data.map((meal: Meal) => (
               <MealCard key={meal.id} meal={meal} />
             ))}
@@ -77,7 +77,7 @@ export default async function MealsPage() {
       )}
 
       <h2 className="text-2xl font-bold mb-4">All Meals</h2>
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {meals?.data?.map((meal: Meal) => (
           <MealCard key={meal.id} meal={meal} />
         ))}

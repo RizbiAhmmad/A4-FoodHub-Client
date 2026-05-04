@@ -21,7 +21,7 @@ export default async function MealDetailsPage({
     <div className="max-w-5xl mx-auto px-4 py-12">
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden md:flex md:gap-8">
         {/* Left: Meal Image */}
-        <div className="relative w-full md:w-1/2 h-96 md:h-auto">
+        <div className="relative w-full md:w-1/2 aspect-square">
           <Image
             src={meal.image || "/placeholder.jpg"}
             alt={meal.name}
