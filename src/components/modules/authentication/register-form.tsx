@@ -1,5 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -30,6 +33,7 @@ const formSchema = z.object({
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const handleGoogleLogin = async () => {
     const data = await authClient.signIn.social({
       provider: "google",
@@ -84,9 +88,8 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
           }}
         >
           <FieldGroup>
-            <form.Field
-              name="name"
-              children={(field) => {
+            <form.Field name="name">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
@@ -97,6 +100,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
+                      placeholder="Enter your name"
                       onChange={(e) => field.handleChange(e.target.value)}
                     ></Input>
                     {isInvalid && (
@@ -105,10 +109,9 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                   </Field>
                 );
               }}
-            />
-            <form.Field
-              name="email"
-              children={(field) => {
+            </form.Field>
+            <form.Field name="email">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
@@ -119,6 +122,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
+                      placeholder="Enter your email"
                       onChange={(e) => field.handleChange(e.target.value)}
                     ></Input>
                     {isInvalid && (
@@ -127,34 +131,44 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                   </Field>
                 );
               }}
-            />
-            <form.Field
-              name="password"
-              children={(field) => {
+            </form.Field>
+            <form.Field name="password">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                    <Input
-                      type="password"
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    ></Input>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        placeholder="Enter your password"
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
                     )}
                   </Field>
                 );
               }}
-            />
+            </form.Field>
           </FieldGroup>
         </form>
       </CardContent>
       <CardFooter className="flex flex-col gap-5 justify-end">
-        <Button form="login-form" type="submit" className="w-full">
+        <Button form="login-form" type="submit" className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md">
           Register
         </Button>
         <Button
@@ -165,6 +179,13 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
         >
           Login with Google
         </Button>
+
+        <div className="w-full text-center text-sm text-muted-foreground">
+          Already have an account?{" "}
+          <Link href="/login" className="text-orange-500 hover:underline font-semibold">
+            Login
+          </Link>
+        </div>
       </CardFooter>
     </Card>
   );

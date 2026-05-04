@@ -1,21 +1,68 @@
-import HomepageExtraSections from "@/components/modules/homepage/HomePageExtraSections"
-import MealCard from "@/components/modules/homepage/MealCard"
-import HeroCarousel from "@/components/modules/homepage/slider"
-import { mealService } from "@/services/meal.service"
-import { Meal } from "@/types/meal.type"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getCategories } from "@/actions/category.action";
+import HomepageExtraSections from "@/components/modules/homepage/HomePageExtraSections";
+import MealCard from "@/components/modules/homepage/MealCard";
+import HeroCarousel from "@/components/modules/homepage/slider";
+import { mealService } from "@/services/meal.service";
+import { Meal } from "@/types/meal.type";
+import Image from "next/image";
 
 export default async function MealsPage() {
-  const featuredMealsPromise = mealService.getMeals({ isFeatured: true })
-  const mealsPromise = mealService.getMeals({ limit: "6" })
+  const featuredMealsPromise = mealService.getMeals({ isFeatured: true });
+  const mealsPromise = mealService.getMeals({ limit: "6" });
+  const categoriesPromise = getCategories();
 
-  const [featuredMeals, meals] = await Promise.all([
+  const [featuredMeals, meals, categories] = await Promise.all([
     featuredMealsPromise,
     mealsPromise,
-  ])
+    categoriesPromise,
+  ]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
-        <HeroCarousel></HeroCarousel>
+      <HeroCarousel></HeroCarousel>
+
+      {/* Category Section */}
+      {categories?.data?.length > 0 && (
+        <section className="my-16">
+          <h2 className="text-3xl font-bold text-center mb-10">
+            All Categories
+          </h2>
+
+          <div className="flex justify-center">
+            <div
+              className="
+        grid 
+        grid-cols-2 
+        sm:grid-cols-3 
+        md:grid-cols-4 
+        gap-4 
+        w-fit
+      "
+            >
+              {categories.data.map((cat: any) => (
+                <div key={cat.id} className="group">
+                  <div className="relative w-40 h-40 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition">
+                    <Image
+                      src={cat.image || "/placeholder.jpg"}
+                      alt={cat.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition duration-500"
+                    />
+
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <h3 className="text-white text-lg font-semibold">
+                        {cat.name}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <h1 className="text-4xl font-bold mt-8 text-center mb-8">🍽️ Meals</h1>
 
       {featuredMeals?.data?.length > 0 && (
@@ -40,5 +87,5 @@ export default async function MealsPage() {
         <HomepageExtraSections></HomepageExtraSections>
       </div>
     </div>
-  )
+  );
 }

@@ -1,5 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -29,6 +32,7 @@ const formSchema = z.object({
 
 export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const handleGoogleLogin = async () => {
     const data = await authClient.signIn.social({
       provider: "google",
@@ -80,9 +84,8 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
         >
           <FieldGroup>
            
-            <form.Field
-              name="email"
-              children={(field) => {
+            <form.Field name="email">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
@@ -93,6 +96,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
+                      placeholder="Enter your email"
                       onChange={(e) => field.handleChange(e.target.value)}
                     ></Input>
                     {isInvalid && (
@@ -101,34 +105,44 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                   </Field>
                 );
               }}
-            />
-            <form.Field
-              name="password"
-              children={(field) => {
+            </form.Field>
+            <form.Field name="password">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                    <Input
-                      type="password"
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    ></Input>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        placeholder="Enter your password"
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
                     )}
                   </Field>
                 );
               }}
-            />
+            </form.Field>
           </FieldGroup>
         </form>
       </CardContent>
       <CardFooter className="flex flex-col gap-5 justify-end">
-        <Button form="login-form" type="submit" className="w-full">
+        <Button form="login-form" type="submit" className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md">
           Login
         </Button>
         <Button
@@ -139,6 +153,64 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
         >
           Login with Google
         </Button>
+
+        <div className="w-full text-center text-sm text-muted-foreground">
+          Don&apos;t have an account?{" "}
+          <Link href="/register" className="text-orange-500 hover:underline font-semibold">
+            Register
+          </Link>
+        </div>
+
+        <div className="w-full mt-2 flex flex-col gap-3">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Demo Credentials
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center w-full">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="w-full sm:w-auto flex-1"
+              type="button"
+              onClick={() => {
+                form.setFieldValue("email", "admin@gmail.com");
+                form.setFieldValue("password", "password1234");
+              }}
+            >
+              Admin
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="w-full sm:w-auto flex-1"
+              type="button"
+              onClick={() => {
+                form.setFieldValue("email", "provider@gmail.com");
+                form.setFieldValue("password", "password1234");
+              }}
+            >
+              Provider
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="w-full sm:w-auto flex-1"
+              type="button"
+              onClick={() => {
+                form.setFieldValue("email", "customer@gmail.com");
+                form.setFieldValue("password", "password1234");
+              }}
+            >
+              Customer
+            </Button>
+          </div>
+        </div>
       </CardFooter>
     </Card>
   );

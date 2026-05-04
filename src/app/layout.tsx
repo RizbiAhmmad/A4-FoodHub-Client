@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 // import { Navbar } from "@/components/layouts/Navbar";
 
+export const dynamic = 'force-dynamic'
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

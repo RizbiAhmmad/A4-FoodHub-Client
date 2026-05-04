@@ -12,6 +12,16 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+    // Check for session token in cookies
+  const sessionToken = request.cookies.get("better-auth.session_token") || request.cookies.get("__Secure-better-auth.session_data");
+
+
+  //* User is not authenticated at all
+  if (!sessionToken) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+
   const role = data.user.role;
 
   const isAdmin = role === Roles.admin;
@@ -36,16 +46,18 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (isCustomer && pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  // if (isCustomer && pathname.startsWith("/dashboard")) {
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
 
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
+   "/dashboard/:path*",
     "/admin-dashboard/:path*",
+    "/provider-dashboard/:path*",
+    "/customer-dashboard/:path*",
   ],
 };
