@@ -57,13 +57,14 @@ interface Navbar1Props {
 const Navbar = ({
   logo = {
     url: "/",
-    src: "https://brand.foodhub.com/images/png/foodhub_vertical_new.png",
+    src: "/Foodhub_logo.png",
     alt: "logo",
-    title: "",
+    title: "FoodHub",
   },
   menu = [
     { title: "Home", url: "/" },
     { title: "Meals", url: "/meals" },
+    { title: "Blog", url: "/blogs" },
     { title: "Dashboard", url: "/dashboard" },
   ],
   auth = {
@@ -90,7 +91,12 @@ const Navbar = ({
   };
 
   return (
-    <header className={cn("sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-3", className)}>
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-3",
+        className,
+      )}
+    >
       <div className="container max-w-7xl mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden items-center lg:flex">
@@ -100,7 +106,8 @@ const Navbar = ({
                 src={logo.src}
                 width={120}
                 height={32}
-                className="max-h-8 w-auto dark:invert"
+                priority
+                className="max-h-8 w-auto"
                 alt={logo.alt}
               />
               <span className="text-lg font-semibold tracking-tighter">
@@ -119,14 +126,18 @@ const Navbar = ({
 
           <div className="flex w-1/4 justify-end gap-2 items-center">
             <ModeToggle></ModeToggle>
-            {mounted && !loading &&
+            {mounted &&
+              !loading &&
               (user ? (
                 <Button onClick={handleSignOut} variant="outline">
                   Sign Out
                 </Button>
               ) : (
                 <>
-                  <Button asChild className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md">
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
+                  >
                     <Link href={auth.login.url}>{auth.login.title}</Link>
                   </Button>
                 </>
@@ -142,7 +153,8 @@ const Navbar = ({
                 src={logo.src}
                 width={120}
                 height={32}
-                className="max-h-8 w-auto dark:invert"
+                priority
+                className="max-h-8 w-auto"
                 alt={logo.alt}
               />
             </a>
@@ -160,7 +172,8 @@ const Navbar = ({
                         src={logo.src}
                         width={120}
                         height={32}
-                        className="max-h-8 w-auto dark:invert"
+                        priority
+                        className="max-h-8 w-auto"
                         alt={logo.alt}
                       />
                     </a>
@@ -176,14 +189,18 @@ const Navbar = ({
                   </Accordion>
                   <div className="flex flex-col gap-3">
                     <ModeToggle></ModeToggle>
-                    {mounted && !loading &&
+                    {mounted &&
+                      !loading &&
                       (user ? (
                         <Button onClick={handleSignOut} variant="outline">
                           Sign Out
                         </Button>
                       ) : (
                         <>
-                          <Button asChild className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md">
+                          <Button
+                            asChild
+                            className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
+                          >
                             <Link href={auth.login.url}>
                               {auth.login.title}
                             </Link>
