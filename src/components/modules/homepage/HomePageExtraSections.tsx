@@ -9,7 +9,14 @@ import {
   Newspaper,
   Mail,
   ArrowRight,
+  HelpCircle,
 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
@@ -306,6 +313,59 @@ export default function HomepageExtraSections() {
             </Button>
           </form>
         </div>
+      </section>
+
+      {/*  FAQ Section - Premium Accordion */}
+      <section className="px-4 max-w-4xl mx-auto">
+        <div className="text-center mb-16 space-y-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-sm font-bold">
+            <HelpCircle size={16} /> FAQ
+          </div>
+          <h2 className="text-4xl font-black text-gray-900 dark:text-white">
+            Common <span className="text-orange-500">Questions</span>
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 font-medium">
+            Everything you need to know about FoodHub and how we serve you.
+          </p>
+        </div>
+
+        <Accordion type="single" collapsible className="w-full space-y-4">
+          {[
+            {
+              q: "How does the delivery process work?",
+              a: "Once you place an order, our certified chefs start preparing your meal immediately. Our hyper-fast delivery partners then pick it up and deliver it to your doorstep within 30 minutes, ensuring it's hot and fresh.",
+            },
+            {
+              q: "Is there a minimum order amount?",
+              a: "We want you to enjoy your favorite meals without any barriers. Most of our meals have no minimum order requirement, though some premium sets might have specific conditions.",
+            },
+            {
+              q: "How can I become a food provider on FoodHub?",
+              a: "We're always looking for talented chefs! You can register as a provider through our dashboard. We conduct a thorough quality and safety check before certifying new providers.",
+            },
+            {
+              q: "Are there healthy or diet-specific options?",
+              a: "Absolutely! We have a wide variety of meals categorized by dietary needs, including vegan, keto, and high-protein options. You can use our filters to find exactly what fits your lifestyle.",
+            },
+            {
+              q: "What if I have specific food allergies?",
+              a: "Your safety is our priority. Each meal listing includes a detailed ingredient list and allergen warnings. You can also add special instructions for the chef during checkout.",
+            },
+          ].map((faq, idx) => (
+            <AccordionItem
+              key={idx}
+              value={`item-${idx}`}
+              className="border border-gray-100 dark:border-gray-800 rounded-[1.5rem] px-6 bg-white dark:bg-gray-900 shadow-sm overflow-hidden"
+            >
+              <AccordionTrigger className="text-lg font-bold text-gray-900 dark:text-white hover:text-orange-600 hover:no-underline py-6">
+                {faq.q}
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-500 dark:text-gray-400 text-base leading-relaxed pb-6">
+                {faq.a}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </section>
 
       {/*  Final CTA - Ultra Premium */}

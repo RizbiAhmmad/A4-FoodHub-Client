@@ -70,7 +70,7 @@ export default async function MealsPage() {
 
       <h1 className="text-4xl font-bold mt-8 text-center mb-8">🍽️ Meals</h1>
 
-      {featuredMeals?.data?.length > 0 && (
+      {/* {featuredMeals?.data?.length > 0 && (
         <>
           <h2 className="text-2xl font-bold mb-4">Featured Meals</h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
@@ -81,7 +81,7 @@ export default async function MealsPage() {
         </>
       )}
 
-      <h2 className="text-2xl font-bold mb-4">All Meals</h2>
+      <h2 className="text-2xl font-bold mb-4">All Meals</h2> */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {meals?.data?.map((meal: Meal) => (
           <MealCard key={meal.id} meal={meal} />

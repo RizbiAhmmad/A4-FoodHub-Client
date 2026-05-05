@@ -43,7 +43,16 @@ export default function Footer() {
                 Meals
               </Link>
             </li>
-
+            <li>
+              <Link href="/providers" className="hover:text-orange-500">
+                Providers
+              </Link>
+            </li>
+            <li>
+              <Link href="/blogs" className="hover:text-orange-500">
+                Blogs
+              </Link>
+            </li>
             <li>
               <Link href="/dashboard" className="hover:text-orange-500">
                 Dashboard
@@ -84,13 +93,13 @@ export default function Footer() {
           <h3 className="text-white font-semibold mb-4">Contact</h3>
           <ul className="space-y-3 text-sm">
             <li className="flex items-center gap-2">
-              <MapPin size={16} /> Dhaka, Bangladesh
+              <MapPin size={16} /> Mirsharai, Chittagong, Bangladesh
             </li>
             <li className="flex items-center gap-2">
               <Phone size={16} /> +880 1234-567890
             </li>
             <li className="flex items-center gap-2">
-              <Mail size={16} /> support@foodhub.com
+              <Mail size={16} /> contact.rizbi123@gmail.com
             </li>
           </ul>
         </div>
