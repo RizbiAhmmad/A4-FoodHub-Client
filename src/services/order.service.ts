@@ -19,6 +19,7 @@ export interface Order {
   phone: string;
   items: OrderItem[];
   status: string; // "pending", "delivered"
+  totalAmount: number;
   createdAt: string;
 }
 
@@ -131,11 +132,15 @@ export const orderService = {
           Cookie: cookieStore.toString(),
         },
         next: { tags: ["orders"] },
+        cache: "no-store",
       });
       const result = await res.json();
-      return { data: result.data, meta: result.meta, error: null };
+      if (!res.ok) {
+        return { data: [], error: { message: result.message || "Failed to fetch orders" } };
+      }
+      return { data: result, error: null };
     } catch {
-      return { data: null, error: { message: "Failed to fetch orders" } };
+      return { data: [], error: { message: "Failed to fetch orders" } };
     }
   },
 
@@ -151,7 +156,7 @@ export const orderService = {
       });
 
       const result = await res.json();
-      return { data: result.data, meta: result.meta, error: null };
+      return { data: result, error: null };
     } catch {
       return {
         data: null,

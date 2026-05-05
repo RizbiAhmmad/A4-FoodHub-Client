@@ -2,10 +2,13 @@
 
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { createOrderAction } from "@/actions/order.action";
 import { Button } from "@/components/ui/button";
 
 export function OrderForm({ mealId }: { mealId: string }) {
+  const router = useRouter();
+
   const form = useForm({
     defaultValues: {
       quantity: 1,
@@ -36,6 +39,7 @@ export function OrderForm({ mealId }: { mealId: string }) {
 
       toast.success("Order placed successfully!", { id: t });
       form.reset();
+      router.push("/customer-dashboard/myOrders");
     },
   });
 

@@ -30,40 +30,29 @@ export default async function MealsPage() {
             All Categories
           </h2>
 
-          <div className="flex justify-center">
-            <div
-              className="
-        grid 
-        grid-cols-2 
-        sm:grid-cols-3 
-        md:grid-cols-4 
-        gap-4 
-        w-fit
-      "
-            >
-              {categories.data.map((cat: any) => (
-                <Link
-                  key={cat.id}
-                  href={`/meals?cuisine=${cat.name}`}
-                  className="group"
-                >
-                  <div className="relative w-40 h-40 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition">
-                    <Image
-                      src={cat.image || "/placeholder.jpg"}
-                      alt={cat.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition duration-500"
-                    />
+          <div className="flex flex-wrap justify-center gap-6">
+            {categories.data.map((cat: any) => (
+              <Link
+                key={cat.id}
+                href={`/meals?cuisine=${cat.name}`}
+                className="group"
+              >
+                <div className="relative w-40 h-40 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition">
+                  <Image
+                    src={cat.image || "/placeholder.jpg"}
+                    alt={cat.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition duration-500"
+                  />
 
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <h3 className="text-white text-lg font-semibold">
-                        {cat.name}
-                      </h3>
-                    </div>
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <h3 className="text-white text-lg font-semibold">
+                      {cat.name}
+                    </h3>
                   </div>
-                </Link>
-              ))}
-            </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
       )}

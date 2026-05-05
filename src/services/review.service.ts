@@ -9,6 +9,19 @@ export interface ReviewData {
   comment?: string;
 }
 
+export interface Review {
+  id: string;
+  mealId: string;
+  customerId: string;
+  rating: number;
+  comment: string | null;
+  createdAt: string;
+  meal?: {
+    name: string;
+    image: string | null;
+  };
+}
+
 export const reviewService = {
   createReview: async (data: ReviewData) => {
     try {

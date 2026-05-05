@@ -1,7 +1,7 @@
 "use server";
 
 import { mealService, MealData, ProviderMeal } from "@/services/meal.service";
-import { revalidateTag, updateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export const getMyMealsAction = async (): Promise<{
   data: ProviderMeal[] | null;
@@ -12,7 +12,7 @@ export const getMyMealsAction = async (): Promise<{
 
 export const createMealAction = async (data: MealData) => {
   const res = await mealService.createMeal(data);
-  updateTag("meals");
+  revalidateTag("meals", "page");
   return res;
 };
 
