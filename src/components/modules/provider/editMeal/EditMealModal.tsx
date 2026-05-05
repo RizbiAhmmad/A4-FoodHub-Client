@@ -18,6 +18,7 @@ export default function EditMealModal({ meal }: { meal: ProviderMeal }) {
       name: formData.get("name") as string,
       description: formData.get("description") as string,
       price: Number(formData.get("price")),
+      image: formData.get("image") as string,
     });
     setLoading(false);
     setOpen(false);
@@ -31,7 +32,9 @@ export default function EditMealModal({ meal }: { meal: ProviderMeal }) {
 
   return (
     <>
-      <Button variant="secondary" onClick={() => setOpen(true)}>Edit or Delete</Button>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Edit or Delete
+      </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
@@ -39,11 +42,37 @@ export default function EditMealModal({ meal }: { meal: ProviderMeal }) {
             <DialogTitle>Edit Meal</DialogTitle>
           </DialogHeader>
 
-          <form action={handleUpdate} className="space-y-3">
-            <Input name="name" defaultValue={meal.name} />
-            <Textarea name="description" defaultValue={meal.description || ""} />
-            <Input name="price" type="number" defaultValue={meal.price} />
-            <Button type="submit" disabled={loading}>Save Changes</Button>
+          <form action={handleUpdate} className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Meal Name</label>
+              <Input name="name" defaultValue={meal.name} />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Description</label>
+              <Textarea
+                name="description"
+                defaultValue={meal.description || ""}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Price (৳)</label>
+              <Input name="price" type="number" defaultValue={meal.price} />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Image URL</label>
+              <Input
+                name="image"
+                defaultValue={meal.image || ""}
+                placeholder="https://example.com/image.jpg"
+              />
+            </div>
+
+            <Button type="submit" className="w-full" disabled={loading}>
+              Save Changes
+            </Button>
           </form>
 
           <Button variant="destructive" onClick={handleDelete} disabled={loading}>

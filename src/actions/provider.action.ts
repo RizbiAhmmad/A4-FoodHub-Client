@@ -1,16 +1,18 @@
 "use server";
 
 import { providerService, ProviderProfileData } from "@/services/provider.service";
-import { updateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
-export const getProviderProfile = async () => {
-  return await providerService.getProfile();
+export const getAllProvidersAction = async () => {
+  return await providerService.getAllProviders();
 };
 
-export const createProviderProfileAction = async (
-  data: ProviderProfileData
-) => {
+export const getProviderByIdAction = async (id: string) => {
+  return await providerService.getProviderById(id);
+};
+
+export const createProviderProfileAction = async (data: ProviderProfileData) => {
   const res = await providerService.createProfile(data);
-  updateTag("provider-profile"); // revalidate
+  revalidateTag("provider-profile", "page");
   return res;
 };

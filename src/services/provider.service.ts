@@ -66,4 +66,28 @@ export const providerService = {
       return { data: null, error: { message: "Something went wrong" } };
     }
   },
+
+  getAllProviders: async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/providers`, {
+        next: { revalidate: 60, tags: ["providers"] },
+      });
+      const data = await res.json();
+      return { data, error: null };
+    } catch {
+      return { data: null, error: { message: "Failed to fetch providers" } };
+    }
+  },
+
+  getProviderById: async (id: string) => {
+    try {
+      const res = await fetch(`${API_URL}/api/providers/${id}`, {
+        next: { revalidate: 60, tags: ["providers"] },
+      });
+      const data = await res.json();
+      return { data, error: null };
+    } catch {
+      return { data: null, error: { message: "Failed to fetch provider details" } };
+    }
+  },
 };
