@@ -1,27 +1,35 @@
 import { Route } from "@/types";
+import { 
+  Home, 
+  ShoppingBag, 
+  Star, 
+  UserCircle 
+} from "lucide-react";
 
-export const customerRoutes: Route[]= [
-    {
-      title: "Customer Management",
-      
-      items: [
-        {
-          title: "Home",
-          url: "/",
-        },
-        {
-          title: "My Orders",
-          url: "/customer-dashboard/myOrders",
-        },
-        {
-          title: "My Reviews",
-          url: "/customer-dashboard/myReviews",
-        },
-        {
-          title: "Profile",
-          url: "/customer-dashboard/profile",
-        },
-       
-      ],
-    },
-  ]
+export const customerRoutes: Route[] = [
+  {
+    title: "Customer Dashboard",
+    items: [
+      {
+        title: "Home",
+        url: "/",
+        icon: Home,
+      },
+      {
+        title: "My Orders",
+        url: "/customer-dashboard/myOrders",
+        icon: ShoppingBag,
+      },
+      {
+        title: "My Reviews",
+        url: "/customer-dashboard/myReviews",
+        icon: Star,
+      },
+      {
+        title: "Profile",
+        url: "/customer-dashboard/profile",
+        icon: UserCircle,
+      },
+    ],
+  },
+];

@@ -1,6 +1,6 @@
 import { getMeAction } from "@/actions/userauth.action";
 import { BadgeCheck, Mail, Shield, User } from "lucide-react";
-import { UpdateProfileModal } from "@/components/modules/customer/profile/UpdateProfileModal";
+import { UpdateProfileModal } from "@/components/modules/shared/profile/UpdateProfileModal";
 
 export default async function CustomerProfilePage() {
   const { data: user } = await getMeAction();

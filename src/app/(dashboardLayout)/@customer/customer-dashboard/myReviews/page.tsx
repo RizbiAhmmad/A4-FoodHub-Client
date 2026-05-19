@@ -1,9 +1,8 @@
 import { getMyReviewsAction } from "@/actions/review.action";
 import { Review } from "@/services/review.service";
 import Image from "next/image";
-import { Star, MessageSquare, Utensils, Calendar } from "lucide-react";
-import { DeleteReviewButton } from "@/components/modules/customer/review/DeleteReviewButton";
-
+import { Star, MessageSquare, Calendar } from "lucide-react";
+import { DeleteReviewButton } from "@/components/modules/customer/Review/DeleteReviewButton";
 export default async function MyReviewsPage() {
   const res = await getMyReviewsAction();
   const reviews: Review[] = res.data || [];
@@ -15,10 +14,12 @@ export default async function MyReviewsPage() {
           <MessageSquare size={48} />
         </div>
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">No Reviews Found</h2>
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+            No Reviews Found
+          </h2>
           <p className="text-gray-500 dark:text-gray-400 max-w-sm">
-            You haven&apos;t shared your feedback on any meals yet. 
-            Your reviews help others find the best food!
+            You haven&apos;t shared your feedback on any meals yet. Your reviews
+            help others find the best food!
           </p>
         </div>
       </div>
@@ -31,7 +32,9 @@ export default async function MyReviewsPage() {
         <div className="bg-orange-500 p-2 rounded-xl text-white">
           <Star size={24} fill="currentColor" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Reviews</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          My Reviews
+        </h1>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">

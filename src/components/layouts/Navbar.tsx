@@ -126,23 +126,23 @@ const Navbar = ({
           </div>
 
           <div className="flex w-1/4 justify-end gap-2 items-center">
-            <ModeToggle></ModeToggle>
-            {mounted &&
-              !loading &&
-              (user ? (
+            <ModeToggle />
+            {mounted && !loading ? (
+              user ? (
                 <Button onClick={handleSignOut} variant="outline">
                   Sign Out
                 </Button>
               ) : (
-                <>
-                  <Button
-                    asChild
-                    className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
-                  >
-                    <Link href={auth.login.url}>{auth.login.title}</Link>
-                  </Button>
-                </>
-              ))}
+                <Button
+                  asChild
+                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
+                >
+                  <Link href={auth.login.url}>{auth.login.title}</Link>
+                </Button>
+              )
+            ) : (
+              <div className="w-20 h-9" /> // Placeholder to prevent layout shift
+            )}
           </div>
         </nav>
 
@@ -159,45 +159,44 @@ const Navbar = ({
                 alt={logo.alt}
               />
             </a>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="size-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>
-                    <a href={logo.url} className="flex items-center gap-2">
-                      <Image
-                        src={logo.src}
-                        width={120}
-                        height={32}
-                        priority
-                        className="max-h-8 w-auto"
-                        alt={logo.alt}
-                      />
-                    </a>
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-6 p-4">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="flex w-full flex-col gap-4"
-                  >
-                    {menu.map((item) => renderMobileMenuItem(item))}
-                  </Accordion>
-                  <div className="flex flex-col gap-3">
-                    <ModeToggle></ModeToggle>
-                    {mounted &&
-                      !loading &&
-                      (user ? (
-                        <Button onClick={handleSignOut} variant="outline">
-                          Sign Out
-                        </Button>
-                      ) : (
-                        <>
+            {mounted ? (
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Menu className="size-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>
+                      <a href={logo.url} className="flex items-center gap-2">
+                        <Image
+                          src={logo.src}
+                          width={120}
+                          height={32}
+                          priority
+                          className="max-h-8 w-auto"
+                          alt={logo.alt}
+                        />
+                      </a>
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-6 p-4">
+                    <Accordion
+                      type="single"
+                      collapsible
+                      className="flex w-full flex-col gap-4"
+                    >
+                      {menu.map((item) => renderMobileMenuItem(item))}
+                    </Accordion>
+                    <div className="flex flex-col gap-3">
+                      <ModeToggle />
+                      {!loading &&
+                        (user ? (
+                          <Button onClick={handleSignOut} variant="outline">
+                            Sign Out
+                          </Button>
+                        ) : (
                           <Button
                             asChild
                             className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
@@ -206,12 +205,16 @@ const Navbar = ({
                               {auth.login.title}
                             </Link>
                           </Button>
-                        </>
-                      ))}
+                        ))}
+                    </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            ) : (
+              <Button variant="outline" size="icon" disabled>
+                <Menu className="size-4" />
+              </Button>
+            )}
           </div>
         </div>
       </div>
