@@ -39,9 +39,12 @@ export function CreateProviderProfileForm() {
       phone: "",
       logo: "",
     },
-    validators: { onSubmit: schema },
-
     onSubmit: async ({ value }) => {
+      const validation = schema.safeParse(value);
+      if (!validation.success) {
+        toast.error(validation.error.issues[0]?.message || "Please fill out the form correctly");
+        return;
+      }
       const t = toast.loading("Creating profile...");
       const res = await createProviderProfileAction(value);
 

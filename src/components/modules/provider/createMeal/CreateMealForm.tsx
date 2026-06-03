@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
-import { createMealAction } from "@/actions/meal.action";
+import { env } from "@/env";
 import { getCategories } from "@/actions/category.action";
 import { useEffect, useState } from "react";
 import { Category } from "@/services/category.service";
@@ -26,26 +27,70 @@ export function CreateMealForm() {
     })();
   }, []);
 
-  const form = useForm({
+  const form = useForm<
+    {
+      name: string;
+      description?: string;
+      price: number;
+      categoryId?: string;
+      image: File | string | null;
+      isFeatured: boolean;
+    },
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    never
+  >({
     defaultValues: {
       name: "",
       description: "",
       price: 0,
       categoryId: "",
-      image: "",
+      image: null,
       isFeatured: false,
     },
     onSubmit: async ({ value }) => {
       const t = toast.loading("Creating meal...");
-      const res = await createMealAction(value);
+      try {
+        const API_URL = env.API_URL;
+        const formData = new FormData();
+        formData.append("name", value.name);
+        formData.append("description", value.description || "");
+        formData.append("price", String(value.price));
+        if (value.categoryId) formData.append("categoryId", value.categoryId);
+        if (value.isFeatured) formData.append("isFeatured", String(value.isFeatured));
 
-      if (res.error) {
-        toast.error(res.error.message, { id: t });
-        return;
+        if ((value.image as any) instanceof File) {
+          formData.append("image", value.image as File);
+        } else if (typeof value.image === "string" && value.image) {
+          formData.append("image", value.image);
+        }
+
+        const res = await fetch(`${API_URL}/api/meals`, {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          toast.error(result.message || "Failed to create meal", { id: t });
+          return;
+        }
+
+        toast.success("Meal created successfully ", { id: t });
+        form.reset();
+      } catch (err) {
+        toast.error("Failed to create meal", { id: t });
       }
-
-      toast.success("Meal created successfully ", { id: t });
-      form.reset();
     },
   });
 
@@ -145,12 +190,12 @@ export function CreateMealForm() {
           <form.Field name="image">
             {(field) => (
               <div className="space-y-2">
-                <label className="text-sm font-medium">Image URL</label>
+                <label className="text-sm font-medium">Image</label>
                 <input
-                  className="input input-bordered w-full"
-                  placeholder="https://example.com/image.jpg"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  type="file"
+                  accept="image/*"
+                  className="w-full"
+                  onChange={(e) => field.handleChange(e.target.files ? e.target.files[0] : null)}
                 />
               </div>
             )}

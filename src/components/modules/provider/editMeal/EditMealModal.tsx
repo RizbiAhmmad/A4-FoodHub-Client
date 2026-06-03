@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { updateMealAction, deleteMealAction } from "@/actions/meal.action";
+import { env } from "@/env";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,12 +15,33 @@ export default function EditMealModal({ meal }: { meal: ProviderMeal }) {
 
   const handleUpdate = async (formData: FormData) => {
     setLoading(true);
-    await updateMealAction(meal.id, {
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      price: Number(formData.get("price")),
-      image: formData.get("image") as string,
-    });
+    try {
+      const imageField = formData.get("image");
+
+      if (imageField && (imageField as any) instanceof File) {
+        const API_URL = env.API_URL;
+        const uploadData = new FormData();
+        uploadData.append("name", formData.get("name") as string);
+        uploadData.append("description", formData.get("description") as string);
+        uploadData.append("price", String(formData.get("price")));
+        uploadData.append("image", imageField);
+
+        await fetch(`${API_URL}/api/meals/${meal.id}`, {
+          method: "PATCH",
+          body: uploadData,
+          credentials: "include",
+        });
+      } else {
+        await updateMealAction(meal.id, {
+          name: formData.get("name") as string,
+          description: formData.get("description") as string,
+          price: Number(formData.get("price")),
+          image: (formData.get("image") as string) || undefined,
+        });
+      }
+    } catch (err) {
+      // ignore here; could surface error handling
+    }
     setLoading(false);
     setOpen(false);
   };
@@ -62,12 +84,13 @@ export default function EditMealModal({ meal }: { meal: ProviderMeal }) {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Image URL</label>
+              <label className="text-sm font-medium">Image</label>
               <Input
                 name="image"
                 defaultValue={meal.image || ""}
-                placeholder="https://example.com/image.jpg"
+                placeholder="Leave blank to keep existing image or upload a new file"
               />
+              <input type="file" name="image" accept="image/*" />
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>

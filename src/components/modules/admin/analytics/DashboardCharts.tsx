@@ -24,7 +24,7 @@ export default function DashboardCharts({ salesData, categoryData }: any) {
         <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-6">
           Revenue Trend (Last 7 Days)
         </h3>
-        <div className="h-[300px] w-full">
+        <div className="h-75 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={salesData}>
               <defs>
@@ -76,7 +76,7 @@ export default function DashboardCharts({ salesData, categoryData }: any) {
         <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-6">
           Meal Distribution by Category
         </h3>
-        <div className="h-[300px] w-full">
+        <div className="h-75 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={categoryData}>
               <CartesianGrid

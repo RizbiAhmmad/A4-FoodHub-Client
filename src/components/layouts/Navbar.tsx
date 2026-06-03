@@ -94,7 +94,7 @@ const Navbar = ({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-3",
+        "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 py-3",
         className,
       )}
     >
@@ -135,7 +135,7 @@ const Navbar = ({
               ) : (
                 <Button
                   asChild
-                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
+                  className="bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
                 >
                   <Link href={auth.login.url}>{auth.login.title}</Link>
                 </Button>
@@ -199,7 +199,7 @@ const Navbar = ({
                         ) : (
                           <Button
                             asChild
-                            className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
+                            className="bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 shadow-md"
                           >
                             <Link href={auth.login.url}>
                               {auth.login.title}

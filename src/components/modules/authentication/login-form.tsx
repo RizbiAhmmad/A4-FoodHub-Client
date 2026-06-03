@@ -43,14 +43,15 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
 
   const form = useForm({
     defaultValues: {
-      
       email: "",
       password: "",
     },
-    validators: {
-      onSubmit: formSchema,
-    },
     onSubmit: async ({ value }) => {
+      const validation = formSchema.safeParse(value);
+      if (!validation.success) {
+        toast.error(validation.error.issues[0]?.message || "Please fill out the form correctly");
+        return;
+      }
       const toastId = toast.loading("Logging in");
 
       try {

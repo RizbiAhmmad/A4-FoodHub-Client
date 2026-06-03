@@ -48,10 +48,12 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
       email: "",
       password: "",
     },
-    validators: {
-      onSubmit: formSchema,
-    },
     onSubmit: async ({ value }) => {
+      const validation = formSchema.safeParse(value);
+      if (!validation.success) {
+        toast.error(validation.error.issues[0]?.message || "Please fill out the form correctly");
+        return;
+      }
       const toastId = toast.loading("Creating User");
       //to rename user data like name to userName
       // const userdata ={
